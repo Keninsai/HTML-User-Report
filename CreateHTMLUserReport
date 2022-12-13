@@ -1,0 +1,55 @@
+   $header = @"
+<style>
+        th {
+        background: #395870;
+        background: linear-gradient(#56615a, #171a18);
+        color: #fff;
+        font-size: 16px;
+        text-transform: uppercase;
+        padding: 10px 15px;
+        vertical-align: middle;
+	}
+    
+    td {
+    
+    border-right: 3px solid black; 
+    color: white;
+    background: linear-gradient(#52b387, #5d8573);
+    
+    }
+
+    #ext {
+    
+        color: red;
+
+    }
+
+
+
+
+
+</style>
+"@
+    
+
+     $domainRoot = Get-ADUser -Filter *
+
+
+
+     foreach($A in $domainRoot) {
+        
+        if($A.enabled -eq $false){
+        
+            
+
+        }
+     
+     }
+
+     $Report = $domainRoot  | Select-Object GivenName, Surname, Name, enabled, PasswordLastSet, LastLogonDate | ConvertTo-Html -body "<h2>AD User Report</h2> <input type='text'> <button> Remove </button> <script></script>" -Title "User Information Report" -Head $header -PostContent "<p>Creation Date: $(Get-Date)<p>"
+     $Report = $Report -replace '<td>false</td>', '<td id="ext">False</td>'
+
+     $Report | Out-File -FilePath C:\UserReport.html
+     
+
+     
